@@ -1,0 +1,12 @@
+[project]
+name = "football-analytics"
+version = "0.1.0"
+description = "End-to-end football analytics platform with real StatsBomb data: xG model, player clustering, and interactive dashboard."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dbt-duckdb>=1.10.1",
+    "duckdb>=1.5.4",
+    "mplsoccer>=1.6.1",
+    "pandas>=3.0.3",
+]
