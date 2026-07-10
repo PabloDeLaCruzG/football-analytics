@@ -9,4 +9,5 @@ dependencies = [
     "duckdb>=1.5.4",
     "mplsoccer>=1.6.1",
     "pandas>=3.0.3",
+    "pyarrow>=25.0.0",
 ]
