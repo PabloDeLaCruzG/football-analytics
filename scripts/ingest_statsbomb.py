@@ -45,7 +45,7 @@ if __name__ == "__main__":
     df_match = get_matches(COMPETITION_ID, 4)
     print(f"{df_match.shape} - Matches!")
     # print(df_match.shape) # matches and columns
-    # print(df_match.columns.tolist()) # To know the columns
+    print(df_match.columns.tolist()) # To know the columns
 
     """ Save each match and his events in the correct Dir"""
     for _, row in df_match.iterrows():
