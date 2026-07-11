@@ -1,9 +1,15 @@
 from mplsoccer import Sbopen
 import pandas as pd
 import pathlib
+import time
 
 BRONZE_DIR = pathlib.Path("data/bronze")
-COMPETITION_ID = 11
+COMPETITIONS = [
+    {"competition_id": 11, "season_id": 2},   # La Liga 2016/2017
+    {"competition_id": 11, "season_id": 1},   # La Liga 2017/2018
+    {"competition_id": 11, "season_id": 4},   # La Liga 2018/2019
+    {"competition_id": 11, "season_id": 42},  # La Liga 2019/2020
+]
 
 def get_matches(competition_id, season_id):
     parser = Sbopen()
@@ -40,30 +46,26 @@ def save_to_bronze(df, match_id, name):
 
 if __name__ == "__main__":
     
-    """ Get all matches """
-    print("Getting matches")
-    df_match = get_matches(COMPETITION_ID, 4)
-    print(f"{df_match.shape} - Matches!")
-    # print(df_match.shape) # matches and columns
-    print(df_match.columns.tolist()) # To know the columns
+    for comp in COMPETITIONS:
+        """ Get all matches """
+        print("Getting matches")
+        df_match = get_matches(comp['competition_id'], comp['season_id'])
+        print(f"{df_match.shape} - Matches!")
+        # print(df_match.shape) # matches and columns
+        # print(df_match.columns.tolist()) # To know the columns
 
-    """ Save each match and his events in the correct Dir"""
-    for _, row in df_match.iterrows():
-        df_event, df_related, df_freeze, df_tactics = get_events(row['match_id'])
+        """ Save each match and his events in the correct Dir"""
+        for _, row in df_match.iterrows():
+            df_event, df_related, df_freeze, df_tactics = get_events(row['match_id'])
 
-        print(f"Processing match {row['match_id']}...")
+            print(f"Processing match {row['match_id']}...")
 
-        save_to_bronze(df_event, row['match_id'], "events")
-        save_to_bronze(df_related, row['match_id'], "related_events")
-        save_to_bronze(df_freeze, row['match_id'], "freeze_events")
-        save_to_bronze(df_tactics, row['match_id'], "tactics_events")
+            save_to_bronze(df_event, row['match_id'], "events")
+            save_to_bronze(df_related, row['match_id'], "related_events")
+            save_to_bronze(df_freeze, row['match_id'], "freeze_events")
+            save_to_bronze(df_tactics, row['match_id'], "tactics_events")
 
-        print(f"Done match {row['match_id']}!")
-    
-    print(f"Ingest is DONE!")
-
-
-    # Check if there are any nested column that need to be serialize to string
-    # for col in df_event.columns:
-    #     if df_event[col].dtype == 'object':
-    #         print(col, type(df_event[col].iloc[0]))
+            print(f"Done match {row['match_id']}!")
+        
+        print(f"Ingest is DONE!")
+        time.sleep(0.1) # Secure delay
